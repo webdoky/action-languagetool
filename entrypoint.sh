@@ -43,6 +43,7 @@ FILES="${INPUT_PATTERNS}"
 run_langtool() {
   for FILE in ${FILES}; do
     echo "Checking ${FILE}..." >&2
+    cat "${FILE}"
     curl --silent \
       --request POST \
       --data "${DATA}" \
