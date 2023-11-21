@@ -36,9 +36,7 @@ if [ -n "${INPUT_ENABLED_ONLY}" ]; then
 fi
 
 # Disable glob to handle glob patterns with ghglob command instead of with shell.
-set -o noglob
-FILES="$(git ls-files | ghglob ${INPUT_PATTERNS})"
-set +o noglob
+FILES="${INPUT_PATTERNS}"
 
 run_langtool() {
   for FILE in ${FILES}; do
@@ -47,12 +45,13 @@ run_langtool() {
       --request POST \
       --data "${DATA}" \
       --data-urlencode "text=$(cat "${FILE}")" \
-      "${API_ENDPOINT}/v2/check" | \
-      FILE="${FILE}" tmpl /langtool.tmpl
+      "${API_ENDPOINT}/v2/check" |
+      # replace .txt in file name with .md
+      FILE="${FILE%.txt}.md" tmpl /langtool.tmpl
   done
 }
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
-run_langtool \
-  | reviewdog -efm="%A%f:%l:%c: %m" -efm="%C %m" -name="LanguageTool" -reporter="${INPUT_REPORTER:-github-pr-check}" -level="${INPUT_LEVEL}"
+run_langtool |
+  reviewdog -efm="%A%f:%l:%c: %m" -efm="%C %m" -name="LanguageTool" -reporter="${INPUT_REPORTER:-github-pr-check}" -level="${INPUT_LEVEL}"
