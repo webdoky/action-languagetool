@@ -46,6 +46,7 @@ run_langtool() {
       --request POST \
       --data "${DATA}" \
       --data-urlencode "text=$(cat "${FILE}")" \
+      --header "Content-Type: application/x-www-form-urlencoded" \
       "${API_ENDPOINT}/v2/check" |
       # replace .txt in file name with .md
       FILE="$(echo $FILE | sed 's/\.txt/\.md/')" tmpl /langtool.tmpl
