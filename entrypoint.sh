@@ -35,6 +35,8 @@ if [ -n "${INPUT_ENABLED_ONLY}" ]; then
   DATA="$DATA&enabledOnly=${INPUT_ENABLED_ONLY}"
 fi
 
+echo "${INPUT_PATTERNS}"
+
 # Disable glob to handle glob patterns with ghglob command instead of with shell.
 FILES="${INPUT_PATTERNS}"
 
