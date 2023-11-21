@@ -47,7 +47,7 @@ run_langtool() {
       --data-urlencode "text=$(cat "${FILE}")" \
       "${API_ENDPOINT}/v2/check" |
       # replace .txt in file name with .md
-      FILE="${FILE%.txt}.md" tmpl /langtool.tmpl
+      FILE="$(echo $FILE | sed 's/\.txt/\.md/')" tmpl /langtool.tmpl
   done
 }
 
