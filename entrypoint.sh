@@ -35,15 +35,13 @@ if [ -n "${INPUT_ENABLED_ONLY}" ]; then
   DATA="$DATA&enabledOnly=${INPUT_ENABLED_ONLY}"
 fi
 
-echo "${INPUT_PATTERNS}"
-
-# Disable glob to handle glob patterns with ghglob command instead of with shell.
 FILES="${INPUT_PATTERNS}"
 
 run_langtool() {
   for FILE in ${FILES}; do
     echo "Checking ${FILE}..." >&2
-    cat "${FILE}"
+    # Print file content
+    cat "${FILE}" >&2
     curl --silent \
       --request POST \
       --data "${DATA}" \
